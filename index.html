@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Economiza 360</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:#080808;color:#fff;font-family:'Inter',sans-serif}
+nav{position:fixed;top:0;left:0;right:0;z-index:99;height:48px;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid #1a1a1a;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.logo{display:flex;align-items:center;gap:8px}
+.logo i{width:32px;height:32px;background:#FF6A00;border-radius:6px;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:900;font-size:13px}
+.logo span{font-weight:700;font-size:15px;letter-spacing:-.3px}
+.logo .oo{color:#FF6A00}
+nav .mid{font-size:10px;color:#444;letter-spacing:2.5px;text-transform:uppercase;font-weight:500}
+#pgn{font-size:11px;color:#555;font-weight:600}
+.ctrl{position:fixed;bottom:20px;right:40px;z-index:99;display:flex;gap:8px}
+.ctrl button{width:44px;height:44px;border-radius:50%;border:1px solid #2a2a2a;background:#141414;color:#fff;font-size:16px;cursor:pointer;transition:all .15s}
+.ctrl button:hover{background:#FF6A00;border-color:#FF6A00}
+#bar{position:fixed;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#FF6A00,#FF8533);z-index:100;transition:width .4s ease}
+.slide{position:absolute;inset:0;display:none;opacity:0;transition:opacity .25s}
+.slide.on{display:flex;opacity:1}
+.fill{width:100%;height:100%;display:flex;flex-direction:column;padding:68px 60px 32px;overflow-y:auto}
+.fill::-webkit-scrollbar{width:4px}
+.fill::-webkit-scrollbar-thumb{background:#FF6A00;border-radius:4px}
+.fc{align-items:center;text-align:center;justify-content:center}
+.fl{justify-content:center}
+.grow{flex:1;display:flex;flex-direction:column;justify-content:center}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3.5px;color:#FF6A00;margin-bottom:12px}
+.tag::before{content:'';width:24px;height:2.5px;background:#FF6A00;border-radius:2px}
+.tagc{justify-content:center}
+h1{font-size:clamp(28px,3.2vw,46px);font-weight:900;line-height:1.08;letter-spacing:-2px;margin-bottom:12px}
+h2{font-size:clamp(24px,2.6vw,38px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:12px}
+.sub{font-size:clamp(14px,1.1vw,18px);line-height:1.6;color:#999;max-width:640px}
+.subc{margin-left:auto;margin-right:auto}
+.hl{color:#FF6A00}
+.grad{background:linear-gradient(135deg,#FF6A00,#FF8C33);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.wh{color:#fff}
+.card{background:#111;border:1px solid #1e1e1e;border-radius:10px}
+.g{display:grid;gap:12px;width:100%}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+.pill{background:#fff;border-radius:6px;padding:6px 14px;display:inline-flex;align-items:center}
+.pill span{font-size:11px;font-weight:700;color:#111}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.rowc{justify-content:center}
+.sep{width:1px;height:28px;background:rgba(255,255,255,.08)}
+.num{font-size:clamp(22px,2vw,32px);font-weight:900;color:#FF6A00}
+.numlg{font-size:clamp(28px,2.4vw,40px)}
+.numrd{color:#FF1744}
+.numgr{color:#00C853}
+.sm{font-size:12px;color:#666;line-height:1.4}
+.xs{font-size:10px;color:#555}
+.alert{background:rgba(255,23,68,.06);border:1px solid rgba(255,23,68,.15);border-radius:10px;padding:16px 24px;display:flex;align-items:center;gap:12px}
+.accent{background:linear-gradient(135deg,rgba(255,106,0,.08),rgba(255,106,0,.02));border:2px solid #FF6A00;border-radius:12px}
+.glow{box-shadow:0 0 30px rgba(255,106,0,.08)}
+.mb{margin-bottom:16px}
+.mt{margin-top:16px}
+.full{width:100%}
+@media(max-width:1024px){
+.fill{padding:56px 20px 24px}
+.g2,.g3,.g4,.g5{grid-template-columns:1fr}
+nav{padding:0 16px}
+.ctrl{right:16px;bottom:14px}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="logo"><i>EZ</i><span>Economiza<span class="oo">360</span></span></div>
+<div class="mid">Apresentação Comercial — Confidencial</div>
+<div id="pgn">01 / 16</div>
+</nav>
+<div id="bar"></div>
+<div class="ctrl"><button onclick="go(-1)">←</button><button onclick="go(1)">→</button></div>
+
+<!--S1 CAPA-->
+<div class="slide on"><div class="fill fc" style="background:linear-gradient(180deg,rgba(8,8,8,.35),rgba(8,8,8,.92)),url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80') center/cover">
+<div class="grow" style="align-items:center">
+<div class="tag tagc">Apresentação Executiva 2026</div>
+<h1 style="max-width:760px">Sua empresa fatura.<br>Mas <span class="grad">quanto fica no caixa?</span></h1>
+<p class="sub subc mb">Descubra como empresas recuperam até 45% dos custos operacionais — sem parar a operação.</p>
+<div class="row rowc mb" style="gap:28px">
+<div style="text-align:center"><div class="num numlg">+R$45MI</div><div class="xs">Economizados</div></div>
+<div class="sep"></div>
+<div style="text-align:center"><div class="num numlg">+R$24MI</div><div class="xs">Restituídos</div></div>
+<div class="sep"></div>
+<div style="text-align:center"><div class="num numlg">+500</div><div class="xs">Empresas atendidas</div></div>
+</div>
+<div class="row rowc" style="gap:6px">
+<div class="pill"><span>Sorridents</span></div><div class="pill"><span>OdontoCompany</span></div><div class="pill"><span>MRV</span></div><div class="pill"><span>Orthopride</span></div><div class="pill"><span>Oral Sin</span></div>
+</div>
+</div>
+</div></div>
+
+<!--S2 QUEM SOMOS-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Quem Somos</div>
+<h2>A maior operação de <span class="hl">eficiência empresarial</span> do Brasil.</h2>
+<p class="sub mb">Desde 2016, transformamos desperdício em lucro. Operamos em todos os estados com +50 profissionais e metodologia proprietária. Não somos consultoria — <strong class="wh">somos operação de execução.</strong></p>
+<div class="row" style="gap:32px">
+<div><div class="num">+10</div><div class="sm">Anos de operação</div></div>
+<div><div class="num">+9.000</div><div class="sm">Diagnósticos realizados</div></div>
+<div><div class="num">+500</div><div class="sm">Empresas atendidas</div></div>
+<div><div class="num">+R$69MI</div><div class="sm">Economia gerada</div></div>
+<div><div class="num">+50</div><div class="sm">Profissionais</div></div>
+</div>
+</div>
+</div></div>
+
+<!--S3 TRAJETÓRIA-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Nossa Trajetória</div>
+<h2>Uma história construída <span class="hl">com resultado.</span></h2>
+<div style="position:relative;margin:20px 0">
+<div style="position:absolute;top:8px;left:0;right:0;height:3px;background:#1a1a1a"></div>
+<div style="position:absolute;top:8px;left:0;width:100%;height:3px;background:linear-gradient(90deg,#FF6A00,#E55D00)"></div>
+<div style="display:flex;justify-content:space-between">
+<div style="text-align:center;flex:1"><div style="width:14px;height:14px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;border:3px solid #080808;position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2016</div><div style="font-size:10px;font-weight:700">Início</div><div class="xs">Setor de otimização</div></div>
+<div style="text-align:center;flex:1"><div style="width:14px;height:14px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;border:3px solid #080808;position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2018</div><div style="font-size:10px;font-weight:700">Atuação</div><div class="xs">Gestão de custos</div></div>
+<div style="text-align:center;flex:1"><div style="width:14px;height:14px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;border:3px solid #080808;position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2019</div><div style="font-size:10px;font-weight:700">Consultores</div><div class="xs">Independentes</div></div>
+<div style="text-align:center;flex:1"><div style="width:14px;height:14px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;border:3px solid #080808;position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2020</div><div style="font-size:10px;font-weight:700">Junção</div><div class="xs">Sócios se unem</div></div>
+<div style="text-align:center;flex:1"><div style="width:14px;height:14px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;border:3px solid #080808;position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2021</div><div style="font-size:10px;font-weight:700">Criação</div><div class="xs">FSO em SP</div></div>
+<div style="text-align:center;flex:1"><div style="width:14px;height:14px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;border:3px solid #080808;position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2022</div><div style="font-size:10px;font-weight:700">Expansão</div><div class="xs">SP → CE</div></div>
+<div style="text-align:center;flex:1"><div style="width:14px;height:14px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;border:3px solid #080808;position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2023</div><div style="font-size:10px;font-weight:700">Reforço</div><div class="xs">3° sócio entra</div></div>
+<div style="text-align:center;flex:1"><div style="width:14px;height:14px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;border:3px solid #080808;position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2024</div><div style="font-size:10px;font-weight:700">Pivotagem</div><div class="xs">Nasce EZ360</div></div>
+<div style="text-align:center;flex:1"><div style="width:18px;height:18px;background:#FF6A00;border-radius:50%;margin:0 auto 6px;box-shadow:0 0 14px rgba(255,106,0,.5);position:relative;z-index:2"></div><div style="font-size:15px;font-weight:900;color:#FF6A00">2025</div><div style="font-size:10px;font-weight:700">Resultado</div><div class="xs">+R$12MI · +100 clientes</div></div>
+</div>
+</div>
+<div class="accent glow" style="padding:18px 28px;display:flex;align-items:center;gap:14px;margin-top:8px">
+<span style="font-size:28px">🌎</span><span style="font-size:15px;font-weight:700">SOMOS A <span class="hl">MAIOR GERADORA DE CAIXA DA AMÉRICA LATINA</span> EM VOLUME DE ECONOMIA GERADO</span>
+</div>
+</div>
+</div></div>
+
+<!--S4 MISSÃO-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Missão, Visão & Propósito</div>
+<h2>O que nos move <span class="hl">todos os dias.</span></h2>
+<div class="g g3 mb">
+<div class="card" style="padding:28px 24px;border-top:3px solid #FF6A00"><div style="font-size:22px;margin-bottom:8px">🎯</div><div style="font-size:16px;font-weight:700;margin-bottom:6px">Nossa Missão</div><p style="font-size:14px;line-height:1.6;color:#999">Gerar eficiência real para <strong class="wh">pequenas e médias empresas</strong> — eliminando desperdícios e devolvendo dinheiro para o caixa do empresário.</p></div>
+<div class="card" style="padding:28px 24px;border-top:3px solid #FF6A00"><div style="font-size:22px;margin-bottom:8px">🔭</div><div style="font-size:16px;font-weight:700;margin-bottom:6px">Nossa Visão</div><p style="font-size:14px;line-height:1.6;color:#999">Ser a referência nacional em eficiência operacional e financeira, com modelo baseado em resultado — não em promessas.</p></div>
+<div class="card" style="padding:28px 24px;border-top:3px solid #FF6A00"><div style="font-size:22px;margin-bottom:8px">💡</div><div style="font-size:16px;font-weight:700;margin-bottom:6px">Nosso Propósito</div><p style="font-size:14px;line-height:1.6;color:#999"><strong class="wh">Empresários movem o Brasil.</strong> Queremos que cada empresa opere com máxima eficiência — mais caixa, mais lucro.</p></div>
+</div>
+<div style="font-size:14px;font-weight:700;margin-bottom:8px">Nossos Valores</div>
+<div class="row" style="gap:6px">
+<div style="background:#111;border:1px solid #1e1e1e;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600"><span class="hl">→</span> Execução acima de tudo</div>
+<div style="background:#111;border:1px solid #1e1e1e;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600"><span class="hl">→</span> Resultado mensurável</div>
+<div style="background:#111;border:1px solid #1e1e1e;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600"><span class="hl">→</span> Transparência radical</div>
+<div style="background:#111;border:1px solid #1e1e1e;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600"><span class="hl">→</span> Compromisso com o caixa</div>
+<div style="background:#111;border:1px solid #1e1e1e;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600"><span class="hl">→</span> Velocidade com qualidade</div>
+<div style="background:#111;border:1px solid #1e1e1e;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:600"><span class="hl">→</span> Parceria de longo prazo</div>
+</div>
+</div>
+</div></div>
+
+<!--S5 PROBLEMA-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">O Problema</div>
+<h2>8 em cada 10 empresas <span class="hl">perdem dinheiro sem saber.</span></h2>
+<p class="sub mb">Não é falta de faturamento. É falta de eficiência. Contratos desatualizados, tributos pagos a mais e processos que geram desperdício silencioso.</p>
+<div class="g g3 mb">
+<div class="card" style="padding:32px 24px;text-align:center"><div style="font-size:36px;margin-bottom:10px">📄</div><div style="font-size:16px;font-weight:700;margin-bottom:6px">Contratos desatualizados</div><p style="font-size:13px;color:#777;line-height:1.5">Fornecedores, planos de saúde, telecom e seguros gerando custos até 40% acima do mercado.</p></div>
+<div class="card" style="padding:32px 24px;text-align:center"><div style="font-size:36px;margin-bottom:10px">💸</div><div style="font-size:16px;font-weight:700;margin-bottom:6px">Tributos pagos a mais</div><p style="font-size:13px;color:#777;line-height:1.5">Classificações erradas, créditos não aproveitados e valores pagos indevidamente ao fisco.</p></div>
+<div class="card" style="padding:32px 24px;text-align:center"><div style="font-size:36px;margin-bottom:10px">⚙️</div><div style="font-size:16px;font-weight:700;margin-bottom:6px">Processos ineficientes</div><p style="font-size:13px;color:#777;line-height:1.5">Retrabalho, duplicidade de funções e compras sem inteligência de mercado.</p></div>
+</div>
+<div class="alert full"><span style="font-size:22px">⚠️</span><span style="font-size:14px;color:#bbb"><strong style="color:#FF1744">Dado alarmante:</strong> 37% da despesa fixa média das PMEs é composta por ineficiências. <strong class="wh">Quanto disso é da sua empresa?</strong></span></div>
+</div>
+</div></div>
+<!--S6 CUSTO-->
+<div class="slide"><div class="fill fc">
+<div class="grow" style="align-items:center">
+<div class="tag tagc">O Custo de Não Agir</div>
+<h2>Grandes empresas já quebraram <span class="hl">faturando milhões.</span></h2>
+<p class="sub subc mb">O problema não está na receita — está no que escapa entre o faturamento e o lucro.</p>
+<div class="accent glow" style="padding:36px 48px;max-width:700px;width:100%">
+<p style="font-size:14px;color:#999;margin-bottom:20px;text-align:center">Se sua empresa tem <strong class="wh">R$ 100 mil/mês em despesas fixas</strong>:</p>
+<div class="row rowc" style="gap:32px">
+<div style="text-align:center"><div class="xs" style="text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">Desperdício mensal</div><div class="num numlg numrd">-R$37K</div></div>
+<div style="font-size:24px;color:#FF6A00">→</div>
+<div style="text-align:center"><div class="xs" style="text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">Perda em 12 meses</div><div class="num numlg numrd">-R$444K</div></div>
+</div>
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,106,0,.25);text-align:center"><p style="font-size:16px;font-weight:700">Esse dinheiro poderia estar no seu caixa. <span class="hl">Hoje.</span></p></div>
+</div>
+</div>
+</div></div>
+
+<!--S7 DIFERENCIAL-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Por Que Somos Diferentes</div>
+<h2>Consultoria recomenda. Mentoria ensina.<br><span class="hl">Nós executamos.</span></h2>
+<p class="sub mb">A maioria entrega relatório e vai embora. O empresário fica sozinho para implementar.</p>
+<table style="width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;font-size:14px">
+<thead><tr>
+<th style="background:#141414;padding:14px 20px;text-align:left;border-bottom:2px solid #1e1e1e;width:22%;font-weight:700;font-size:13px">Critério</th>
+<th style="background:#141414;padding:14px 20px;text-align:left;border-bottom:2px solid #1e1e1e;font-weight:700;font-size:13px">Consultorias tradicionais</th>
+<th style="background:#FF6A00;padding:14px 20px;text-align:center;border-bottom:2px solid #FF6A00;font-weight:700;font-size:13px">Economiza 360</th>
+</tr></thead>
+<tbody>
+<tr><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;color:#999">Entrega</td><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;color:#999">Relatórios e recomendações</td><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;background:rgba(255,106,0,.06);text-align:center;font-weight:700;color:#FF6A00">Execução + resultado real</td></tr>
+<tr><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;color:#999">Quem executa</td><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;color:#999">Sua equipe (sobrecarregada)</td><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;background:rgba(255,106,0,.06);text-align:center;font-weight:700;color:#FF6A00">Nossa equipe especializada</td></tr>
+<tr><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;color:#999">Prazo</td><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;color:#999">3 a 6 meses</td><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;background:rgba(255,106,0,.06);text-align:center;font-weight:700;color:#FF6A00">Até 45 dias</td></tr>
+<tr><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;color:#999">Risco financeiro</td><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;color:#999">Paga adiantado sem garantia</td><td style="padding:12px 20px;border-bottom:1px solid #1a1a1a;background:rgba(255,106,0,.06);text-align:center;font-weight:700;color:#FF6A00">Remuneração por resultado</td></tr>
+<tr><td style="padding:12px 20px;color:#999">Operação</td><td style="padding:12px 20px;color:#999">Trava o time por meses</td><td style="padding:12px 20px;background:rgba(255,106,0,.06);text-align:center;font-weight:700;color:#FF6A00">Zero interrupção</td></tr>
+</tbody></table>
+</div>
+</div></div>
+
+<!--S8 SFP-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Metodologia Proprietária</div>
+<h2>SFP — Sistema Full Performance<span class="hl">®</span></h2>
+<p class="sub mb">O método das maiores corporações do mundo, aplicado com velocidade e execução para PMEs brasileiras.</p>
+<div style="display:flex;align-items:stretch;margin-bottom:16px">
+<div style="flex:1;padding:28px 16px;background:#111;border:1px solid #1e1e1e;border-radius:10px 0 0 10px;text-align:center"><div style="font-size:32px;font-weight:900;color:#FF6A00">01</div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:4px 0">Diagnóstico</div><div style="font-size:13px;color:#777">Mapeamos toda a estrutura de custos, contratos e processos.</div></div>
+<div style="display:flex;align-items:center;width:24px;color:#FF6A00;justify-content:center;font-size:14px">→</div>
+<div style="flex:1;padding:28px 16px;background:#111;border:1px solid #1e1e1e;text-align:center"><div style="font-size:32px;font-weight:900;color:#FF6A00">02</div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:4px 0">Identificação</div><div style="font-size:13px;color:#777">Priorizamos o que gera impacto direto no lucro e caixa.</div></div>
+<div style="display:flex;align-items:center;width:24px;color:#FF6A00;justify-content:center;font-size:14px">→</div>
+<div style="flex:1;padding:28px 16px;background:#111;border:1px solid #1e1e1e;text-align:center"><div style="font-size:32px;font-weight:900;color:#FF6A00">03</div><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:4px 0">Solução</div><div style="font-size:13px;color:#777">Planos personalizados, mensuráveis e com prazo definido.</div></div>
+<div style="display:flex;align-items:center;width:24px;color:#FF6A00;justify-content:center;font-size:14px">→</div>
+<div style="flex:1;padding:28px 16px;background:#FF6A00;border-radius:0 10px 10px 0;text-align:center"><div style="font-size:32px;font-weight:900;color:#fff">04</div><div style="font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin:4px 0">Execução</div><div style="font-size:13px;color:rgba(255,255,255,.85)">Implementamos de ponta a ponta. Você não faz nada.</div></div>
+</div>
+<div class="card" style="text-align:center;padding:14px 20px;margin-bottom:16px"><p style="font-size:14px;font-weight:700">É no pilar 4 que está nosso DNA. <span class="hl">Enquanto outros param na teoria, nós já estamos na sua operação.</span></p></div>
+<div class="g g4">
+<div style="background:rgba(255,106,0,.05);border:1px solid rgba(255,106,0,.15);border-radius:8px;padding:16px;text-align:center"><div class="num">45 dias</div><div class="sm">Resultado no caixa</div></div>
+<div style="background:rgba(255,106,0,.05);border:1px solid rgba(255,106,0,.15);border-radius:8px;padding:16px;text-align:center"><div class="num">Zero</div><div class="sm">Interrupção na operação</div></div>
+<div style="background:rgba(255,106,0,.05);border:1px solid rgba(255,106,0,.15);border-radius:8px;padding:16px;text-align:center"><div class="num">100%</div><div class="sm">Nossa equipe executa</div></div>
+<div style="background:rgba(255,106,0,.05);border:1px solid rgba(255,106,0,.15);border-radius:8px;padding:16px;text-align:center"><div class="num">Paga</div><div class="sm">Somente por resultado</div></div>
+</div>
+</div>
+</div></div>
+
+<!--S9 PRODUTOS-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Nossos Produtos</div>
+<h2>4 soluções que cobrem <span class="hl">toda sua operação.</span></h2>
+<div class="g g2 mt">
+<div class="card" style="padding:28px 24px;border-left:4px solid #FF6A00;display:flex;flex-direction:column;justify-content:space-between">
+<div><div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">Produto 01</div>
+<div style="font-size:20px;font-weight:800;margin-bottom:6px">Full Otimização 360</div>
+<p style="font-size:14px;color:#888;line-height:1.55;margin-bottom:12px">Contratos, fornecedores, tributos, desperdícios ocultos, energia, telecom, seguros e benefícios. Diagnóstico + execução completa.</p></div>
+<div class="row" style="gap:8px"><div style="background:rgba(255,106,0,.1);border-radius:6px;padding:6px 12px"><span style="font-size:13px;font-weight:700;color:#FF6A00">37-45%</span><span style="font-size:11px;color:#888"> economia</span></div><div style="background:rgba(0,200,83,.1);border-radius:6px;padding:6px 12px"><span style="font-size:13px;font-weight:700;color:#00C853">45 dias</span><span style="font-size:11px;color:#888"> resultado</span></div></div>
+</div>
+<div class="card" style="padding:28px 24px;border-left:4px solid #FF6A00;display:flex;flex-direction:column;justify-content:space-between">
+<div><div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">Produto 02</div>
+<div style="font-size:20px;font-weight:800;margin-bottom:6px">Tecnologia & Performance</div>
+<p style="font-size:14px;color:#888;line-height:1.55;margin-bottom:12px">BI, dashboards, CRM personalizado, automação de processos, sistema financeiro e ferramentas exclusivas EZ.</p></div>
+<div class="row" style="gap:8px"><div style="background:rgba(255,106,0,.1);border-radius:6px;padding:6px 12px"><span style="font-size:13px;font-weight:700;color:#FF6A00">Dados</span><span style="font-size:11px;color:#888"> para decisão</span></div><div style="background:rgba(0,200,83,.1);border-radius:6px;padding:6px 12px"><span style="font-size:13px;font-weight:700;color:#00C853">100%</span><span style="font-size:11px;color:#888"> integrado</span></div></div>
+</div>
+<div class="card" style="padding:28px 24px;border-left:4px solid #FF6A00;display:flex;flex-direction:column;justify-content:space-between">
+<div><div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">Produto 03</div>
+<div style="font-size:20px;font-weight:800;margin-bottom:6px">Estruturação de RH & DP</div>
+<p style="font-size:14px;color:#888;line-height:1.55;margin-bottom:12px">Folha de pagamento, cargos, cultura organizacional, KPIs de pessoas, turnover, metas por área e BI de RH.</p></div>
+<div class="row" style="gap:8px"><div style="background:rgba(255,106,0,.1);border-radius:6px;padding:6px 12px"><span style="font-size:13px;font-weight:700;color:#FF6A00">-40%</span><span style="font-size:11px;color:#888"> turnover</span></div><div style="background:rgba(0,200,83,.1);border-radius:6px;padding:6px 12px"><span style="font-size:13px;font-weight:700;color:#00C853">+25%</span><span style="font-size:11px;color:#888"> produtividade</span></div></div>
+</div>
+<div class="card" style="padding:28px 24px;border-left:4px solid #FF6A00;display:flex;flex-direction:column;justify-content:space-between">
+<div><div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">Produto 04</div>
+<div style="font-size:20px;font-weight:800;margin-bottom:6px">Recrutamento & Seleção</div>
+<p style="font-size:14px;color:#888;line-height:1.55;margin-bottom:12px">Profissionais de gestão, analistas e técnicos em até 14 dias — com fit tríplice: técnico, comportamental e cultural.</p></div>
+<div class="row" style="gap:8px"><div style="background:rgba(255,106,0,.1);border-radius:6px;padding:6px 12px"><span style="font-size:13px;font-weight:700;color:#FF6A00">14 dias</span><span style="font-size:11px;color:#888"> prazo</span></div><div style="background:rgba(0,200,83,.1);border-radius:6px;padding:6px 12px"><span style="font-size:13px;font-weight:700;color:#00C853">92%</span><span style="font-size:11px;color:#888"> aprovação</span></div></div>
+</div>
+</div>
+</div>
+</div></div>
+
+<!--S10 CASES-->
+<div class="slide"><div class="fill fc">
+<div class="grow" style="align-items:center">
+<div class="tag tagc">Resultados Comprovados</div>
+<h2>Cases reais. <span class="hl">Economia real.</span></h2>
+<p class="sub subc mb">Clientes que confiaram na EZ e viram resultado direto no caixa:</p>
+<div class="g g5 full">
+<div class="card" style="text-align:center;padding:24px 14px"><div style="font-size:10px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">9 anos parceria</div><div class="pill" style="margin-bottom:10px"><span>Go Express Log</span></div><div style="font-size:13px;font-weight:600">Go Express Log</div><div class="xs">Recife — PE</div><div class="num" style="margin-top:8px">R$ 1.2MI</div><div class="xs">Economia 2023</div></div>
+<div class="card" style="text-align:center;padding:24px 14px"><div style="font-size:10px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">3 anos parceria</div><div class="pill" style="margin-bottom:10px"><span>EMATER MG</span></div><div style="font-size:13px;font-weight:600">Emater Minas</div><div class="xs">Minas Gerais</div><div class="num" style="margin-top:8px">R$ 932K</div><div class="xs">Economia 2023</div></div>
+<div class="card" style="text-align:center;padding:24px 14px"><div style="font-size:10px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">9 anos parceria</div><div class="pill" style="margin-bottom:10px"><span>Grupo Fortaleza</span></div><div style="font-size:13px;font-weight:600">Grupo Fortaleza</div><div class="xs">Fortaleza — CE</div><div class="num" style="margin-top:8px">R$ 756K</div><div class="xs">Economia 2025</div></div>
+<div class="card" style="text-align:center;padding:24px 14px"><div style="font-size:10px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">1 ano parceria</div><div class="pill" style="margin-bottom:10px"><span>Recife Importados</span></div><div style="font-size:13px;font-weight:600">Recife Importados</div><div class="xs">Recife — PE</div><div class="num" style="margin-top:8px">R$ 304K</div><div class="xs">Economia 2025</div></div>
+<div class="card" style="text-align:center;padding:24px 14px"><div style="font-size:10px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">10 meses</div><div class="pill" style="margin-bottom:10px"><span>Natal Fachadas</span></div><div style="font-size:13px;font-weight:600">Natal Fachadas</div><div class="xs">Natal — RN</div><div class="num" style="margin-top:8px">R$ 146K</div><div class="xs">Economia 2025</div></div>
+</div>
+</div>
+</div></div>
+
+<!--S11 SEGMENTOS-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Cases por Segmento</div>
+<h2>Resultados que se repetem <span class="hl">em qualquer segmento.</span></h2>
+<div class="g g3 mt">
+<div class="card" style="padding:24px 20px"><div style="display:inline-block;background:#FF6A00;color:#fff;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Indústria Alimentos — SP</div><div style="font-size:15px;font-weight:700;margin-bottom:2px">180 colaboradores</div><div style="font-size:12px;color:#777;margin-bottom:12px">Otimização de contratos e processos</div>
+<div class="g g2"><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#FF6A00">44%</div><div class="xs">↓ CUSTOS</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#FF6A00">R$ 86K</div><div class="xs">ECO/MÊS</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#00C853">+31%</div><div class="xs">EFICIÊNCIA</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#00C853">38%</div><div class="xs">↓ DESPERDÍCIO</div></div></div></div>
+<div class="card" style="padding:24px 20px"><div style="display:inline-block;background:#FF6A00;color:#fff;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Indústria Automotiva — Autopeças</div><div style="font-size:15px;font-weight:700;margin-bottom:2px">Múltiplos contratos</div><div style="font-size:12px;color:#777;margin-bottom:12px">Revisão completa de custos</div>
+<div class="g g2"><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#FF6A00">39%</div><div class="xs">↓ CUSTOS</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#FF6A00">R$ 92K</div><div class="xs">ECO/MÊS</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#00C853">+35%</div><div class="xs">EFICIÊNCIA</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#00C853">30%</div><div class="xs">↓ LOGÍSTICA</div></div></div></div>
+<div class="card" style="padding:24px 20px"><div style="display:inline-block;background:#FF6A00;color:#fff;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Indústria Metalúrgica — NE</div><div style="font-size:15px;font-weight:700;margin-bottom:2px">Operação intensiva</div><div style="font-size:12px;color:#777;margin-bottom:12px">Reestruturação de fornecedores</div>
+<div class="g g2"><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#FF6A00">41%</div><div class="xs">↓ CUSTOS</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#FF6A00">R$ 74K</div><div class="xs">ECO/MÊS</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#00C853">+29%</div><div class="xs">EFICIÊNCIA</div></div><div style="background:rgba(255,255,255,.03);border-radius:6px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:900;color:#00C853">33%</div><div class="xs">↓ RETRABALHO</div></div></div></div>
+</div>
+</div>
+</div></div>
+<!--S12 CLIENTES-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Empresas que Confiam</div>
+<h2>Quem já passou pela <span class="hl">Economiza 360.</span></h2>
+<div style="margin-top:12px">
+<div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px">Saúde & Odontologia</div>
+<div class="row mb" style="gap:6px"><div class="pill"><span>Sorridents</span></div><div class="pill"><span>OdontoCompany</span></div><div class="pill"><span>Orthopride</span></div><div class="pill"><span>Oral Sin</span></div><div class="pill"><span>OdontoPrev</span></div><div class="pill"><span>JP Odonto</span></div></div>
+<div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px">Construção Civil</div>
+<div class="row mb" style="gap:6px"><div class="pill"><span>MRV</span></div><div class="pill"><span>Minas Construtora</span></div><div class="pill"><span>Natal Fachadas</span></div></div>
+<div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px">Logística & Distribuição</div>
+<div class="row mb" style="gap:6px"><div class="pill"><span>Go Express Log</span></div><div class="pill"><span>Arco Verde Distribuidor</span></div><div class="pill"><span>Brasileirinho Mudanças</span></div></div>
+<div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px">Comércio & Varejo</div>
+<div class="row mb" style="gap:6px"><div class="pill"><span>Recife Importados</span></div><div class="pill"><span>Grupo Fortaleza</span></div><div class="pill"><span>Emater Minas</span></div></div>
+<div style="font-size:11px;font-weight:700;color:#FF6A00;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px">Franquias & Redes</div>
+<div class="row" style="gap:6px"><div class="pill"><span>Sorridents</span></div><div class="pill"><span>OdontoCompany</span></div><div class="pill"><span>Orthopride</span></div><div class="pill"><span>Oral Sin</span></div></div>
+</div>
+</div>
+</div></div>
+
+<!--S13 COMO FUNCIONA-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Como Funciona</div>
+<h2>Do diagnóstico ao resultado <span class="hl">em 4 passos simples.</span></h2>
+<p class="sub mb">Você não precisa parar a operação, treinar ninguém ou mudar processos.</p>
+<div style="display:flex;align-items:stretch;margin-bottom:16px">
+<div style="flex:1;padding:32px 18px;background:#111;border:1px solid #1e1e1e;border-radius:10px 0 0 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="width:40px;height:40px;background:#FF6A00;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin-bottom:10px">1</div><div style="font-size:15px;font-weight:700;margin-bottom:4px">Diagnóstico</div><div style="font-size:13px;color:#777;line-height:1.5">Analisamos custos, contratos e processos.</div><div style="margin-top:10px;display:inline-block;background:#FF6A00;color:#fff;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px">Dia 1</div></div>
+<div style="display:flex;align-items:center;width:24px;color:#FF6A00;justify-content:center;font-size:16px">→</div>
+<div style="flex:1;padding:32px 18px;background:#111;border:1px solid #1e1e1e;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="width:40px;height:40px;background:#FF6A00;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin-bottom:10px">2</div><div style="font-size:15px;font-weight:700;margin-bottom:4px">Plano de Ação</div><div style="font-size:13px;color:#777;line-height:1.5">Onde está o desperdício e quanto economizar.</div><div style="margin-top:10px;display:inline-block;background:#FF6A00;color:#fff;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px">Semana 1</div></div>
+<div style="display:flex;align-items:center;width:24px;color:#FF6A00;justify-content:center;font-size:16px">→</div>
+<div style="flex:1;padding:32px 18px;background:#111;border:1px solid #1e1e1e;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="width:40px;height:40px;background:#FF6A00;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin-bottom:10px">3</div><div style="font-size:15px;font-weight:700;margin-bottom:4px">Execução</div><div style="font-size:13px;color:#777;line-height:1.5">Renegociações, otimizações e implementações.</div><div style="margin-top:10px;display:inline-block;background:#FF6A00;color:#fff;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px">Semana 2+</div></div>
+<div style="display:flex;align-items:center;width:24px;color:#FF6A00;justify-content:center;font-size:16px">→</div>
+<div style="flex:1;padding:32px 18px;background:#FF6A00;border-radius:0 10px 10px 0;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="width:40px;height:40px;background:#fff;color:#FF6A00;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin-bottom:10px">4</div><div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px">Resultado</div><div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.5">Economia real aparecendo no caixa.</div><div style="margin-top:10px;display:inline-block;background:#fff;color:#FF6A00;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px">45 dias</div></div>
+</div>
+<div class="card" style="text-align:center;padding:16px 24px"><p style="font-size:15px;font-weight:700">Você não precisa fazer nada. <span class="hl">A gente entra, executa e entrega.</span></p></div>
+</div>
+</div></div>
+
+<!--S14 PARCERIA-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Modelo de Parceria</div>
+<h2>Nosso ganho está ligado <span class="hl">ao seu resultado.</span></h2>
+<p class="sub mb">Se não tem resultado, não tem pagamento. Simples assim.</p>
+<div class="g g2" style="max-width:900px">
+<div class="card" style="padding:36px 32px;text-align:center">
+<div style="font-size:32px;margin-bottom:10px">❌</div>
+<div style="font-size:18px;font-weight:700;margin-bottom:14px">Modelo Tradicional</div>
+<div style="text-align:left">
+<div style="padding:10px 0;border-bottom:1px solid #1a1a1a;font-size:14px;color:#999;display:flex;align-items:center;gap:10px"><span style="color:#FF1744;font-weight:700;font-size:14px">✗</span> Paga adiantado sem garantia</div>
+<div style="padding:10px 0;border-bottom:1px solid #1a1a1a;font-size:14px;color:#999;display:flex;align-items:center;gap:10px"><span style="color:#FF1744;font-weight:700;font-size:14px">✗</span> Recebe relatório e se vira</div>
+<div style="padding:10px 0;border-bottom:1px solid #1a1a1a;font-size:14px;color:#999;display:flex;align-items:center;gap:10px"><span style="color:#FF1744;font-weight:700;font-size:14px">✗</span> Trava o time por meses</div>
+<div style="padding:10px 0;font-size:14px;color:#999;display:flex;align-items:center;gap:10px"><span style="color:#FF1744;font-weight:700;font-size:14px">✗</span> Risco 100% do cliente</div>
+</div></div>
+<div class="accent glow" style="padding:36px 32px;text-align:center">
+<div style="font-size:32px;margin-bottom:10px">🔥</div>
+<div style="font-size:18px;font-weight:700;margin-bottom:14px">Modelo <span class="hl">Economiza 360</span></div>
+<div style="text-align:left">
+<div style="padding:10px 0;border-bottom:1px solid rgba(255,106,0,.15);font-size:14px;display:flex;align-items:center;gap:10px"><span style="color:#00C853;font-weight:700;font-size:14px">✓</span> Remuneração por resultado</div>
+<div style="padding:10px 0;border-bottom:1px solid rgba(255,106,0,.15);font-size:14px;display:flex;align-items:center;gap:10px"><span style="color:#00C853;font-weight:700;font-size:14px">✓</span> Execução de ponta a ponta</div>
+<div style="padding:10px 0;border-bottom:1px solid rgba(255,106,0,.15);font-size:14px;display:flex;align-items:center;gap:10px"><span style="color:#00C853;font-weight:700;font-size:14px">✓</span> Zero interrupção da operação</div>
+<div style="padding:10px 0;font-size:14px;display:flex;align-items:center;gap:10px"><span style="color:#00C853;font-weight:700;font-size:14px">✓</span> Resultado em até 45 dias</div>
+</div></div>
+</div>
+</div>
+</div></div>
+
+<!--S15 OBJEÇÕES-->
+<div class="slide"><div class="fill fl">
+<div class="grow">
+<div class="tag">Objeções Comuns</div>
+<h2>Talvez você esteja pensando <span class="hl">uma dessas coisas.</span></h2>
+<div class="g mt full" style="grid-template-columns:1fr 1fr;gap:14px">
+<div class="card" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:center">
+<div style="font-size:15px;font-weight:700;color:#FF6A00;margin-bottom:8px">❌ "Preciso falar com meu sócio."</div>
+<p style="font-size:14px;color:#999;line-height:1.65">Perfeito — leve esses números. A única pergunta que vocês precisam responder juntos é: <strong class="hl">"Quanto estamos perdendo por mês sem resolver isso?"</strong></p>
+</div>
+<div class="card" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:center">
+<div style="font-size:15px;font-weight:700;color:#FF6A00;margin-bottom:8px">❌ "Já tentei algo parecido."</div>
+<p style="font-size:14px;color:#999;line-height:1.65">Provavelmente contratou alguém que entregou um diagnóstico e foi embora. <strong class="wh">Nós não somos consultoria. Nós executamos.</strong> Entramos na operação e só ganhamos quando você economiza.</p>
+</div>
+<div class="card" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:center">
+<div style="font-size:15px;font-weight:700;color:#FF6A00;margin-bottom:8px">❌ "Meu financeiro já cuida disso."</div>
+<p style="font-size:14px;color:#999;line-height:1.65">Seu financeiro é bom no que faz — mas ninguém faz o que a gente faz. <strong class="hl">Já encontramos oportunidades em 100% das empresas analisadas.</strong> Em todas. Sem exceção.</p>
+</div>
+<div class="card" style="padding:28px 24px;display:flex;flex-direction:column;justify-content:center">
+<div style="font-size:15px;font-weight:700;color:#FF6A00;margin-bottom:8px">❌ "Agora não é o momento certo."</div>
+<p style="font-size:14px;color:#999;line-height:1.65">Se sua empresa perde R$ 30, 50 ou 90 mil/mês em ineficiências, <strong class="hl">cada mês de espera é dinheiro que sai do caixa e não volta.</strong> O melhor momento era ontem. O segundo melhor é agora.</p>
+</div>
+</div>
+</div>
+</div></div>
+
+<!--S16 CTA-->
+<div class="slide"><div class="fill fc" style="background:linear-gradient(180deg,rgba(8,8,8,.4),rgba(8,8,8,.93)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80') center/cover">
+<div class="grow" style="align-items:center">
+<div class="tag tagc">Próximo Passo</div>
+<h1 style="max-width:700px">Pronto para descobrir<br><span class="grad">quanto sua empresa pode economizar?</span></h1>
+<p class="sub subc mb">Agende um diagnóstico gratuito. Sem compromisso, sem custo, sem risco.</p>
+<div class="row rowc mb" style="gap:10px">
+<a href="#" style="background:#FF6A00;color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px">📞 Agendar Diagnóstico Gratuito</a>
+<a href="#" style="background:rgba(255,255,255,.06);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;border:1px solid #2a2a2a;display:inline-flex;align-items:center;gap:8px">📧 contato@economiza360.com</a>
+</div>
+<div class="row rowc mb" style="gap:28px">
+<div style="text-align:center"><div class="num numlg">+R$45MI</div><div class="xs">Economizados</div></div>
+<div class="sep"></div>
+<div style="text-align:center"><div class="num numlg">+500</div><div class="xs">Empresas</div></div>
+<div class="sep"></div>
+<div style="text-align:center"><div class="num numlg">45 dias</div><div class="xs">Para resultado</div></div>
+</div>
+<div class="row rowc" style="gap:10px">
+<div style="background:rgba(255,255,255,.04);border:1px solid #1e1e1e;border-radius:8px;padding:14px 20px;text-align:center;min-width:220px">
+<div style="font-size:12px;font-weight:700;color:#FF6A00;margin-bottom:4px">📍 Fortaleza — CE</div>
+<div style="font-size:11px;color:#666;line-height:1.4">Av. Santos Dumont, 1510, Sala 1205<br>Aldeota — CEP 60150-161</div>
+</div>
+<div style="background:rgba(255,255,255,.04);border:1px solid #1e1e1e;border-radius:8px;padding:14px 20px;text-align:center;min-width:220px">
+<div style="font-size:12px;font-weight:700;color:#FF6A00;margin-bottom:4px">📍 Recife — PE</div>
+<div style="font-size:11px;color:#666;line-height:1.4">R. Padre Carapuceiro, 858, Sala 1408<br>Boa Viagem — CEP 51020-280</div>
+</div>
+<div style="background:rgba(255,255,255,.04);border:1px solid #1e1e1e;border-radius:8px;padding:14px 20px;text-align:center;min-width:220px">
+<div style="font-size:12px;font-weight:700;color:#FF6A00;margin-bottom:4px">📍 São Paulo — SP</div>
+<div style="font-size:11px;color:#666;line-height:1.4">Av. Paulista, 1106, Sala 01<br>Bela Vista — CEP 01310-914</div>
+</div>
+</div>
+<div style="margin-top:12px"><div class="xs">© 2026 Economiza 360 — Todos os direitos reservados</div></div>
+</div>
+</div></div>
+
+<script>
+let c=0;
+const s=document.querySelectorAll('.slide'),t=s.length;
+function u(){
+s.forEach(x=>x.classList.remove('on'));
+s[c].classList.add('on');
+document.getElementById('pgn').textContent=String(c+1).padStart(2,'0')+' / '+String(t).padStart(2,'0');
+document.getElementById('bar').style.width=((c+1)/t*100)+'%';
+}
+function go(d){c=Math.max(0,Math.min(t-1,c+d));u();}
+document.addEventListener('keydown',e=>{
+if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}
+if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{let d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50)go(d>0?1:-1);});
+u();
+</script>
+</body>
+</html>
